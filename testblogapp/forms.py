@@ -20,7 +20,7 @@ class SignupForm(UserCreationForm):
 
 class CreatePostForm(forms.ModelForm):
     class Meta:
-        model =Post
+        model = Post
         fields = ['title', 'content']
 
 
@@ -40,3 +40,9 @@ class UserUpdateForm(forms.ModelForm):
         for field in (self.fields['username'], self.fields['email']):
             field.help_text = None
             field.widget.attrs.update({'class': 'form-control '})
+
+
+class PostUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content']
