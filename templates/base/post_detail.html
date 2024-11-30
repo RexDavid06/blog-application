@@ -31,31 +31,38 @@
                     <p class="mt-3">
                         <a class="" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
                             aria-controls="collapseExample">
-                            <!-- Comments: {{ post.comment_count }} -->
+                            Comments: {{posts.comment_count}}
                         </a>
                     </p>
                     <div class="collapse" id="collapseExample">
                         <div style="height: 250px; overflow-y: scroll;" class="card card-body">
-                            <!-- {% for comment in post.comments %} -->
+                        {% for comment in posts.comment.all %}
                             <p class="text-justify">
                             <div class="row">
                                 <div class="col-md-3">
-                                    <!-- {{ comment.user.username }} -->
+                                    {{comment.user.username}}
                                 </div>
                                 <div class="col-md-9">
-                                    <!-- {{ comment.content }} -->
+                                  {{comment.content}}
                                 </div>
+
+                                <div class="col-md-9">
+                                    {{comment.date_posted}}
+                                  </div>
+
+                            
                             </div>
                             <hr>
                             </p>
-                            <!-- {% endfor %} -->
+                            {% endfor %}
+                        
                         </div>
                     </div>
-                    <!-- <form method="POST">
+                    <form method="post">
                         {% csrf_token %}
                         {{ c_form }}
                         <input class="btn btn-primary btn-sm" type="submit" value="Comment">
-                    </form> -->
+                    </form>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import SignupForm, CreatePostForm, ProfileUpdateForm, UserUpdateForm, PostUpdateForm
+from .forms import SignupForm, CreatePostForm, ProfileUpdateForm, UserUpdateForm, PostUpdateForm, CommentForm
 from .models import Post
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -57,7 +57,7 @@ def profile(request):
     else:
         u_form = UserUpdateForm(request.POST or None, instance=request.user)
         p_form = ProfileUpdateForm(request.POST or None, request.FILES or None, instance=request.user.profile)
-        context = {
+        context = { 
             "u_form":u_form,
             "p_form": p_form
         }
@@ -67,8 +67,19 @@ def profile(request):
 @login_required(login_url='login')
 def post_detail(request, pk):
     posts = Post.objects.get(id=pk)
+    if request.method == 'POST':
+        c_form = CommentForm(request.POST)
+        if c_form.is_valid():
+            instance = c_form.save(commit=False)
+            instance.user = request.user
+            instance.post = posts
+            instance.save()
+            return redirect('post_detail', pk=posts.id)
+    else:
+        c_form = CommentForm()
     context = {
         "posts": posts,
+        "c_form":c_form
     }
     return render(request, 'base/post_detail.html', context)
 
